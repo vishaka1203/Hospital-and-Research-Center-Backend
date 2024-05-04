@@ -14,10 +14,12 @@ Server.use(bodyParser.json());
 
 // Nodemailer transporter configuration
 const transporter = nodemailer.createTransport({
-  service: 'gmail',
+  host: 'smtp.gmail.com',
+  port: 465,
+  secure: true,
   auth: {
     user: 'Vishaka7721@gmail.com',
-    pass: 'Vishaka3636',
+    pass: '', // TODO: GENERATE PASSWORD HERE https://security.google.com/settings/security/apppasswords
   },
 });
 
@@ -48,10 +50,13 @@ Server.post('/book-appointment', async (req, res) => {
 
 // Endpoint to send email to the selected doctor
 Server.post('/send-email', async (req, res) => {
+  console.log(req.body)
   const { doctorEmail, formData } = req.body;
 
+  console.log(doctorEmail, formData)
+
   const mailOptions = {
-    from: 'your-email@gmail.com',
+    from: 'Vishaka7721@gmail.com',
     to: doctorEmail,
     subject: 'New Appointment',
     text: `You have a new appointment request:\n\nDate: ${formData.selectedDate}\nTime: ${formData.selectedTime}\nName: ${formData.name}\nEmail: ${formData.email}\nMobile: ${formData.mobile}\nProblem Description: ${formData.problemDescription}`,
